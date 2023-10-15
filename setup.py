@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="akrule",
-    version="v0.0.4",
+    version="v0.0.5",
     author="Hasan Basri Akcay",
     author_email="hasan.basri.akcay@gmail.com",
     description="Highly efficient and precise machine learning models.",
@@ -21,7 +21,7 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 2",
-        "License :: OSI Approved :: Apache License",
+        "License :: OSI Approved :: Apache-2.0 License",
         "Operating System :: OS Independent",
     ],
     install_requires=["pandas", "numpy", "scipy"],
