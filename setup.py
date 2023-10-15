@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="akrule",
-    version="v0.0.2",
+    version="v0.0.3",
     author="Hasan Basri Akcay",
     author_email="hasan.basri.akcay@gmail.com",
     description="Highly efficient and precise machine learning models.",
