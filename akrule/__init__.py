@@ -1,3 +1,1 @@
-from akrule.time_series import (
-    AKRuleBasedTS,
-    )
+from akrule import time_series
