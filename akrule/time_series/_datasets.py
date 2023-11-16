@@ -62,3 +62,36 @@ def get_yearly_monthly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=
     df_month["y"] += noise
     df_month["y"] *= df_month["Anomaly"]
     return df_month
+
+def get_yearly_monthly_daily_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
+    x = np.arange(0,28)
+    y =  np.sin(4*np.pi*x/(28))
+    y_map = {i+1:y[i] for i in range(28)}
+    end_year = datetime.now().date()
+    start_year = end_year - timedelta(days=N*30.47)
+    
+    df_daily = pd.DataFrame()
+    df_daily["time"] = pd.date_range(start=start_year, end=end_year, freq="1D")
+    df_daily["y"] = df_daily["time"].dt.day
+    df_daily["y"] = df_daily["y"].map(y_map)
+    df_daily.loc[df_daily["y"]>1, "y"] = 0
+    df_daily["Country"] = "A"
+    
+    anomaly_values = np.ones(df_daily.shape[0])
+    anomaly_num = round(df_daily.shape[0]*anomaly_percentage/100)
+    anomaly_values[:anomaly_num] = 2
+    trend = np.arange(0,df_daily.shape[0]) * 5 / df_daily.shape[0]
+    
+    df_daily_b = df_daily.copy()
+    df_daily_b["Country"] = "B"
+    df_daily["Anomaly"] = np.random.choice(anomaly_values, df_daily.shape[0])
+    df_daily_b["Anomaly"] = np.random.choice(anomaly_values, df_daily.shape[0])
+    df_daily["y"] = df_daily.y + trend
+    df_daily_b["y"] = df_daily_b.y + trend*-2    
+    df_daily = pd.concat([df_daily, df_daily_b]).reset_index(drop=True)
+    
+    noise = np.random.normal(0, noise_std, size=df_daily.shape[0])
+    df_daily["y"] += noise
+    df_daily["y"] *= df_daily["Anomaly"]
+    
+    return df_daily
