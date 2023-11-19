@@ -10,7 +10,7 @@ def  get_yearly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
     end_year = datetime.now().date()
     start_year = end_year - timedelta(days=365.64*N)
     df_year = pd.DataFrame()
-    df_year["time"] = pd.date_range(start=start_year, end=end_year, freq="1Y")
+    df_year["time"] = pd.date_range(start=start_year, end=end_year, freq="1Y")[:data_year.shape[0]]
     df_year["y"] = data_year*scale
     df_year["Country"] = "A"
     df_year["City"] = "C"
@@ -40,7 +40,7 @@ def get_yearly_monthly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=
     start_year = end_year - timedelta(days=N*30.47)
     
     df_month = pd.DataFrame()
-    df_month["time"] = pd.date_range(start=start_year, end=end_year, freq="1M")
+    df_month["time"] = pd.date_range(start=start_year, end=end_year, freq="1M")[:len(y)]
     df_month["y"] = y + np.arange(0,N) / N
     df_month["Country"] = "A"
     df_month["y"] = df_month.y*scale
@@ -65,7 +65,7 @@ def get_yearly_monthly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=
 
 def get_yearly_monthly_daily_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
     x = np.arange(0,28)
-    y =  np.sin(4*np.pi*x/(28))
+    y =  np.sin(4*np.pi*x/(28))*max_value
     y_map = {i+1:y[i] for i in range(28)}
     end_year = datetime.now().date()
     start_year = end_year - timedelta(days=N*30.47)
@@ -104,7 +104,7 @@ def get_monthly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
     end_year = datetime.now().date()
     start_year = end_year - timedelta(days=30.47*N)
     df_month = pd.DataFrame()
-    df_month["time"] = pd.date_range(start=start_year, end=end_year, freq="1M")
+    df_month["time"] = pd.date_range(start=start_year, end=end_year, freq="1M")[:data_month.shape[0]]
     df_month["y"] = data_month*scale
     df_month["Country"] = "A"
     df_month["City"] = "C"
@@ -134,7 +134,7 @@ def get_monthly_weekly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=
     start_year = end_year - timedelta(days=N*7)
 
     df_weekly = pd.DataFrame()
-    df_weekly["time"] = pd.date_range(start=start_year, end=end_year, freq="1W")
+    df_weekly["time"] = pd.date_range(start=start_year, end=end_year, freq="1W")[:len(y)]
     df_weekly["y"] = y + np.arange(0,N) / N
     df_weekly["Country"] = "A"
     df_weekly["y"] = df_weekly.y*scale
@@ -187,3 +187,95 @@ def get_monthly_weekly_daily_data(N=10, max_value=10, noise_std=3, anomaly_perce
     df_daily["y"] += noise
     df_daily["y"] *= df_daily["Anomaly"]
     return df_daily
+
+def get_weekly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
+    data_week = np.ones(N)
+    trend = np.arange(0,N) / N
+    data_week += trend
+    scale = max_value/max(data_week)
+    end_year = datetime.now().date()
+    start_year = end_year - timedelta(days=7*N)
+    df_week = pd.DataFrame()
+    df_week["time"] = pd.date_range(start=start_year, end=end_year, freq="1W")[:data_week.shape[0]]
+    df_week["y"] = data_week*scale
+    df_week["Country"] = "A"
+    
+    anomaly_values = np.ones(df_week.shape[0])
+    anomaly_num = round(df_week.shape[0]*anomaly_percentage/100)
+    anomaly_values[:anomaly_num] = 2
+    trend = np.arange(0,df_week.shape[0]) * 5 / df_week.shape[0]
+    
+    df_week_b = df_week.copy()
+    df_week_b["Country"] = "B"
+    df_week["Anomaly"] = np.random.choice(anomaly_values, df_week.shape[0])
+    df_week_b["Anomaly"] = np.random.choice(anomaly_values, df_week.shape[0])
+    df_week["y"] = df_week.y + trend
+    df_week_b["y"] = df_week_b.y + trend*-2    
+    df_week = pd.concat([df_week, df_week_b]).reset_index(drop=True)
+    
+    noise = np.random.normal(0, noise_std, size=df_week.shape[0])
+    df_week["y"] += noise
+    df_week["y"] *= df_week["Anomaly"]
+    return df_week
+
+def get_weekly_daily_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
+    y = [1, 0.5, 0, -0.5, -1, -0.5, 0]
+    y = y * int(N)
+    scale = max_value/max(y)
+    end_year = datetime.now().date()
+    start_year = end_year - timedelta(days=N*7)
+
+    df_daily = pd.DataFrame()
+    df_daily["time"] = pd.date_range(start=start_year, end=end_year, freq="1D")[:len(y)]
+    df_daily["y"] = y
+    df_daily["Country"] = "A"
+    df_daily["y"] = df_daily.y*scale
+    
+    anomaly_values = np.ones(df_daily.shape[0])
+    anomaly_num = round(df_daily.shape[0]*anomaly_percentage/100)
+    anomaly_values[:anomaly_num] = 2
+    trend = np.arange(0,df_daily.shape[0]) * 5 / df_daily.shape[0]
+    
+    df_daily_b = df_daily.copy()
+    df_daily_b["Country"] = "B"
+    df_daily["Anomaly"] = np.random.choice(anomaly_values, df_daily.shape[0])
+    df_daily_b["Anomaly"] = np.random.choice(anomaly_values, df_daily.shape[0])
+    df_daily["y"] = df_daily.y + trend
+    df_daily_b["y"] = df_daily_b.y + trend*-2    
+    df_daily = pd.concat([df_daily, df_daily_b]).reset_index(drop=True)
+    
+    noise = np.random.normal(0, noise_std, size=df_daily.shape[0])
+    df_daily["y"] += noise
+    df_daily["y"] *= df_daily["Anomaly"]
+    return df_daily
+
+def get_weekly_daily_hourly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
+    x = np.arange(0,24)
+    y =  np.sin(4*np.pi*x/(24))*max_value
+    y_map = {i:y[i] for i in range(24)}
+    end_year = datetime.now().date()
+    start_year = end_year - timedelta(days=N)
+
+    df_hourly = pd.DataFrame()
+    df_hourly["time"] = pd.date_range(start=start_year, end=end_year, freq="1h")
+    df_hourly["y"] = df_hourly["time"].dt.hour
+    df_hourly["y"] = df_hourly["y"].map(y_map)
+    df_hourly["Country"] = "A"
+    
+    anomaly_values = np.ones(df_hourly.shape[0])
+    anomaly_num = round(df_hourly.shape[0]*anomaly_percentage/100)
+    anomaly_values[:anomaly_num] = 2
+    trend = np.arange(0,df_hourly.shape[0]) * 5 / df_hourly.shape[0]
+    
+    df_hourly_b = df_hourly.copy()
+    df_hourly_b["Country"] = "B"
+    df_hourly["Anomaly"] = np.random.choice(anomaly_values, df_hourly.shape[0])
+    df_hourly_b["Anomaly"] = np.random.choice(anomaly_values, df_hourly.shape[0])
+    df_hourly["y"] = df_hourly.y + trend
+    df_hourly_b["y"] = df_hourly_b.y + trend*-2    
+    df_hourly = pd.concat([df_hourly, df_hourly_b]).reset_index(drop=True)
+    
+    noise = np.random.normal(0, noise_std, size=df_hourly.shape[0])
+    df_hourly["y"] += noise
+    df_hourly["y"] *= df_hourly["Anomaly"]
+    return df_hourly
