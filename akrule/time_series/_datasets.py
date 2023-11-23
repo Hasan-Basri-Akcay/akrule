@@ -279,3 +279,95 @@ def get_weekly_daily_hourly_data(N=10, max_value=10, noise_std=3, anomaly_percen
     df_hourly["y"] += noise
     df_hourly["y"] *= df_hourly["Anomaly"]
     return df_hourly
+
+def get_daily_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
+    data_daily = np.ones(N)
+    trend = np.arange(0,N) / N
+    data_daily += trend
+    scale = max_value/max(data_daily)
+    end_year = datetime.now().date()
+    start_year = end_year - timedelta(days=N)
+    df_daily = pd.DataFrame()
+    df_daily["time"] = pd.date_range(start=start_year, end=end_year, freq="1D")[:data_daily.shape[0]]
+    df_daily["y"] = data_daily*scale
+    df_daily["Country"] = "A"
+    
+    anomaly_values = np.ones(df_daily.shape[0])
+    anomaly_num = round(df_daily.shape[0]*anomaly_percentage/100)
+    anomaly_values[:anomaly_num] = 2
+    trend = np.arange(0,df_daily.shape[0]) * 5 / df_daily.shape[0]
+    
+    df_daily_b = df_daily.copy()
+    df_daily_b["Country"] = "B"
+    df_daily["Anomaly"] = np.random.choice(anomaly_values, df_daily.shape[0])
+    df_daily_b["Anomaly"] = np.random.choice(anomaly_values, df_daily.shape[0])
+    df_daily["y"] = df_daily.y + trend
+    df_daily_b["y"] = df_daily_b.y + trend*-2    
+    df_daily = pd.concat([df_daily, df_daily_b]).reset_index(drop=True)
+    
+    noise = np.random.normal(0, noise_std, size=df_daily.shape[0])
+    df_daily["y"] += noise
+    df_daily["y"] *= df_daily["Anomaly"]
+    return df_daily
+
+def get_daily_hourly_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
+    x = np.arange(0,24)
+    y =  np.sin(4*np.pi*x/(24))*max_value
+    y_map = {i:y[i] for i in range(24)}
+    end_year = datetime.now().date()
+    start_year = end_year - timedelta(days=N)
+
+    df_hourly = pd.DataFrame()
+    df_hourly["time"] = pd.date_range(start=start_year, end=end_year, freq="1h")
+    df_hourly["y"] = df_hourly["time"].dt.hour
+    df_hourly["y"] = df_hourly["y"].map(y_map)
+    df_hourly["Country"] = "A"
+    
+    anomaly_values = np.ones(df_hourly.shape[0])
+    anomaly_num = round(df_hourly.shape[0]*anomaly_percentage/100)
+    anomaly_values[:anomaly_num] = 2
+    trend = np.arange(0,df_hourly.shape[0]) * 5 / df_hourly.shape[0]
+    
+    df_hourly_b = df_hourly.copy()
+    df_hourly_b["Country"] = "B"
+    df_hourly["Anomaly"] = np.random.choice(anomaly_values, df_hourly.shape[0])
+    df_hourly_b["Anomaly"] = np.random.choice(anomaly_values, df_hourly.shape[0])
+    df_hourly["y"] = df_hourly.y + trend
+    df_hourly_b["y"] = df_hourly_b.y + trend*-2    
+    df_hourly = pd.concat([df_hourly, df_hourly_b]).reset_index(drop=True)
+    
+    noise = np.random.normal(0, noise_std, size=df_hourly.shape[0])
+    df_hourly["y"] += noise
+    df_hourly["y"] *= df_hourly["Anomaly"]
+    return df_hourly
+
+def get_daily_hourly_minutely_data(N=10, max_value=10, noise_std=3, anomaly_percentage=0):
+    x = np.arange(0,60)
+    y =  np.sin(1*np.pi*x/(60))*max_value
+    y_map = {i:y[i] for i in range(60)}
+    end_year = datetime.now().date()
+    start_year = end_year - timedelta(days=N)
+
+    df_minutely = pd.DataFrame()
+    df_minutely["time"] = pd.date_range(start=start_year, end=end_year, freq="1T")
+    df_minutely["y"] = df_minutely["time"].dt.minute
+    df_minutely["y"] = df_minutely["y"].map(y_map)
+    df_minutely["Country"] = "A"
+    
+    anomaly_values = np.ones(df_minutely.shape[0])
+    anomaly_num = round(df_minutely.shape[0]*anomaly_percentage/100)
+    anomaly_values[:anomaly_num] = 2
+    trend = np.arange(0,df_minutely.shape[0]) * 5 / df_minutely.shape[0]
+    
+    df_minutely_b = df_minutely.copy()
+    df_minutely_b["Country"] = "B"
+    df_minutely["Anomaly"] = np.random.choice(anomaly_values, df_minutely.shape[0])
+    df_minutely_b["Anomaly"] = np.random.choice(anomaly_values, df_minutely.shape[0])
+    df_minutely["y"] = df_minutely.y + trend
+    df_minutely_b["y"] = df_minutely_b.y + trend*-2    
+    df_minutely = pd.concat([df_minutely, df_minutely_b]).reset_index(drop=True)
+    
+    noise = np.random.normal(0, noise_std, size=df_minutely.shape[0])
+    df_minutely["y"] += noise
+    df_minutely["y"] *= df_minutely["Anomaly"]
+    return df_minutely

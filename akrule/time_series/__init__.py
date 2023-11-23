@@ -10,5 +10,8 @@ from ._datasets import (
     get_monthly_weekly_daily_data,
     get_weekly_data,
     get_weekly_daily_data,
-    get_weekly_daily_hourly_data
+    get_weekly_daily_hourly_data,
+    get_daily_data,
+    get_daily_hourly_data,
+    get_daily_hourly_minutely_data
 )
