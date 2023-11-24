@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from sklearn.metrics import r2_score
 
 
 def QAPE_Percentage_Bootstrap_Score(y_true, y_pred, num_samples=1000, ci=0.95):
@@ -42,7 +41,6 @@ def QAPE_Mix_Score(group, num_samples=1000, ci=0.95):
     
     group["ScoreQAPE_PER"] = quantile_error_per.mean()
     group["ScoreQAPE_AMO"] = quantile_error_amo.mean()
-    group["ScoreR2"] = r2_score(y_true[np.isfinite(y_true)], y_pred[np.isfinite(y_pred)])
     return group
 
 
@@ -225,7 +223,6 @@ class AKRuleBasedTS():
             {
                 'ScoreQAPE_PER': QAPE_Percentage_Bootstrap_Score(group['y_notrend'].values, group['y_notrend_pred'].values, num_samples=self.metric_num_samples, ci=self.metric_ci),
                 'ScoreQAPE_AMO': QAPE_Amount_Bootstrap_Score(group['y_notrend'].values, group['y_notrend_pred'].values, num_samples=self.metric_num_samples, ci=self.metric_ci),
-                'ScoreR2': r2_score(group['y_notrend'].values, group['y_notrend_pred'].values)
             }
         ))
         self.scores = scores
