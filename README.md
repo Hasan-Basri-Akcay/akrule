@@ -1,5 +1,4 @@
 # AKRULE
-[![Python-pachage](https://img.shields.io/badge/python--pachage-passing-green?logo=github)](https://github.com/Hasan-Basri-Akcay/akrule/actions)
 [![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Hasan-Basri-Akcay/akrule/python-publish.yml?logo=github)](https://github.com/Hasan-Basri-Akcay/akrule/actions)
 [![Docs](https://img.shields.io/badge/docs-passing-green)](https://medium.com/@hasan.basri.akcay)
 [![Pyversions](https://img.shields.io/pypi/pyversions/ibm-analytics-engine-python.svg?logo=python)](https://pypi.python.org/pypi/ibm-analytics-engine-python)
