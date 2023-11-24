@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
 import sys
-sys.path.append("./")
+#sys.path.append("./")
+
 from akrule.time_series import get_daily_hourly_minutely_data
 from akrule.time_series import get_daily_hourly_data
 from akrule.time_series import get_daily_data
