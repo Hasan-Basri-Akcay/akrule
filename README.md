@@ -19,3 +19,5 @@ akrule requires:
   * Python (>= 3.9)
   * NumPy (>= 1.24.4)
   * Pandas (>= 2.1.2)
+
+## Time-Series Forecasting and Anomaly Detection
