@@ -31,7 +31,8 @@ X_train_daily = df_daily[df_daily["time"]<split_time].copy()
 X_test_daily = df_daily[df_daily["time"]>=split_time].copy()
 
 tag_features = ["Country"]
-model = AKRuleBasedTS(freqs=["weekly", "dayofweek"], tag_features=tag_features, average_num=3, trend_level=1, fillna=True, metric_ci=0.90, inplace=False)
+model = AKRuleBasedTS(freqs=["weekly", "dayofweek"], tag_features=tag_features, average_num=3, trend_level=1, fillna=True,
+                      metric_ci=0.90, inplace=False)
 X_val = model.fit_predict(X_train_daily)
 X_pred = model.predict(X_test_daily.drop(["y"], axis=1))
 ```
