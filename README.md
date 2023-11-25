@@ -9,6 +9,9 @@
 Some explanations...
 
 ## Installation
+```
+pip install akrule
+```
 ## Dependencies
 akrule requires:
   * Python (>= 3.9)
