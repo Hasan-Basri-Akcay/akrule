@@ -6,6 +6,8 @@
 [![Python](https://img.shields.io/pypi/pyversions/akrule?logo=python)](https://pypi.org/project/akrule/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+Some explanations...
+
 ## Installation
 ## Dependencies
 akrule requires:
