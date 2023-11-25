@@ -8,7 +8,7 @@
 
 Some explanations...
 
-Detailed [Medium](https://medium.com/@hasan.basri.akcay) post on using featdist.
+Detailed [Medium](https://medium.com/@hasan.basri.akcay) post on using akrule.
 
 ## Installation
 ```
