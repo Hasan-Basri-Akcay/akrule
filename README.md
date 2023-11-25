@@ -8,6 +8,8 @@
 
 Some explanations...
 
+Detailed [Medium](https://medium.com/@hasan.basri.akcay) post on using featdist.
+
 ## Installation
 ```
 pip install akrule
