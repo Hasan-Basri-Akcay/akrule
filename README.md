@@ -40,3 +40,4 @@ X_pred = model.predict(X_test_daily.drop(["y"], axis=1))
 ```
 plot_pred(X_val=X_val, X_pred=X_pred, tag_features=tag_features, figsize=(16,4))
 ```
+<img src="/outputs/weekly_daily_ci90.png?raw=true"/>
