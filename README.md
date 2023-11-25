@@ -35,9 +35,18 @@ model = AKRuleBasedTS(freqs=["weekly", "dayofweek"], tag_features=tag_features, 
                       metric_ci=0.90, inplace=False)
 X_val = model.fit_predict(X_train_daily)
 X_pred = model.predict(X_test_daily.drop(["y"], axis=1))
-```
 
-```
 plot_pred(X_val=X_val, X_pred=X_pred, tag_features=tag_features, figsize=(16,4))
 ```
 <img src="/outputs/weekly_daily_ci90.png?raw=true"/>
+
+```
+tag_features = ["Country"]
+model = AKRuleBasedTS(freqs=["weekly", "dayofweek"], tag_features=tag_features, average_num=3, trend_level=1, fillna=True,
+                      metric_ci=0.70, inplace=False)
+X_val = model.fit_predict(X_train_daily)
+X_pred = model.predict(X_test_daily.drop(["y"], axis=1))
+
+plot_pred(X_val=X_val, X_pred=X_pred, tag_features=tag_features, figsize=(16,4))
+```
+<img src="/outputs/weekly_daily_ci70.png?raw=true"/>
