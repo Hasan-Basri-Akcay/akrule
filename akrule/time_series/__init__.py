@@ -1,3 +1,7 @@
+from .utils import (
+    plot_pred
+)
+
 from ._akrulebasedts import (
     AKRuleBasedTS
     )
