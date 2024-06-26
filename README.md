@@ -6,7 +6,9 @@
 [![Python](https://img.shields.io/pypi/pyversions/akrule?logo=python)](https://pypi.org/project/akrule/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Some explanations...
+Akrule stands out as a powerful rule-based time series forecasting machine learning model designed for optimal performance in both real-time training and prediction scenarios. Its notable feature lies in its swift training capabilities, enabling efficient and timely predictions. Akrule goes beyond standard forecasting models by providing insightful upper and lower boundaries through the integration of confidence intervals and bootstrapping techniques. This unique attribute makes it particularly valuable for anomaly detection, as it empowers users to identify deviations from expected patterns.
+
+Akrule's effectiveness is underscored by its keen sensitivity to seasonality and trend analysis, making it well-suited for applications where these factors play a crucial role in influencing time series data. By harnessing the power of Akrule, users can not only achieve accurate predictions but also gain a comprehensive understanding of the potential variations and uncertainties associated with their data, enhancing the model's utility across diverse domains.
 
 Detailed [Medium](https://medium.com/@hasan.basri.akcay) post on using akrule.
 
@@ -35,8 +37,18 @@ model = AKRuleBasedTS(freqs=["weekly", "dayofweek"], tag_features=tag_features, 
                       metric_ci=0.90, inplace=False)
 X_val = model.fit_predict(X_train_daily)
 X_pred = model.predict(X_test_daily.drop(["y"], axis=1))
-```
 
-```
 plot_pred(X_val=X_val, X_pred=X_pred, tag_features=tag_features, figsize=(16,4))
 ```
+<img src="/outputs/weekly_daily_ci90.png?raw=true"/>
+
+```
+tag_features = ["Country"]
+model = AKRuleBasedTS(freqs=["weekly", "dayofweek"], tag_features=tag_features, average_num=3, trend_level=1, fillna=True,
+                      metric_ci=0.70, inplace=False)
+X_val = model.fit_predict(X_train_daily)
+X_pred = model.predict(X_test_daily.drop(["y"], axis=1))
+
+plot_pred(X_val=X_val, X_pred=X_pred, tag_features=tag_features, figsize=(16,4))
+```
+<img src="/outputs/weekly_daily_ci70.png?raw=true"/>
