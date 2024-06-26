@@ -58,7 +58,7 @@ class AKCosSimNLP():
         tfidf_matrix = self.vectorizer.fit_transform(X)
         
         # Dimension Reduction
-        if self.n_components is None: self.n_components = self._pca_find_best_component_num(tfidf_matrix)
+        if self.n_components is None: self.n_components = self._pca_find_best_component_num(tfidf_matrix.toarray())
         self.model_nmf = NMF(n_components=self.n_components, max_iter=1000, random_state=0)
         nmf_matrix = self.model_nmf.fit_transform(tfidf_matrix)
         

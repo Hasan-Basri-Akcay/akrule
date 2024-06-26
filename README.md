@@ -18,9 +18,18 @@ pip install akrule
 ```
 ## Dependencies
 akrule requires:
+time_series
   * Python (>= 3.9)
   * NumPy (>= 1.24.4)
   * Pandas (>= 2.1.2)
+nlp
+  * Python (>= 3.9)
+  * NumPy (>= 1.24.4)
+  * Pandas (>= 2.1.2)
+  * SpaCy (>= 3.7.5)
+  * en_core_web_sm (>= 3.7.1)
+  * Sklearn (>= 1.3.2)
+  * Kneed (>= 0.8.5)
 
 ## Time-Series Forecasting and Anomaly Detection
 ```
@@ -52,3 +61,21 @@ X_pred = model.predict(X_test_daily.drop(["y"], axis=1))
 plot_pred(X_val=X_val, X_pred=X_pred, tag_features=tag_features, figsize=(16,4))
 ```
 <img src="/outputs/weekly_daily_ci70.png?raw=true"/>
+
+## NLP Text Similarity Calculation With Score
+```
+from akrule.nlp import AKCosSimNLP
+
+model = AKCosSimNLP(data=df, spacy_path="en_core_web_sm")
+X = model.fit_transform(df["TEXT"])
+df["CLEAN_TEXT"] = X
+df.head()
+```
+<img src="/outputs/nlp_data.png?raw=true"/>
+
+```
+text = "The football match was intense, with both football teams giving their best until the final football whistle."
+X_pred = model.predict(text)
+X_pred.head(10)
+```
+<img src="/outputs/nlp_pred.png?raw=true"/>
