@@ -13,11 +13,12 @@ class AKCosSimNLP():
     """
     """
     
-    def __init__(self, data: pd.DataFrame, n_components: int=None, spacy_path: str= "en_core_web_sm"):
+    def __init__(self, data: pd.DataFrame, n_components: int=None, spacy_path: str= "en_core_web_sm", round: int=6):
         self.data = data.copy()
         self.nlp = spacy.load(spacy_path)
-        self.vectorizer = None
         self.n_components = n_components
+        self.round = round
+        self.vectorizer = None
         self.model_nmf = None
         self.norm_matrix = None
     
@@ -84,5 +85,6 @@ class AKCosSimNLP():
         # Cosine Similarity
         similarity_text = self.norm_matrix.dot(norm_matrix.reshape(-1))
         
-        self.data["COS_SIMILARITY"] = similarity_text        
+        self.data["COS_SIMILARITY"] = similarity_text  
+        if self.round > 0: self.data["COS_SIMILARITY"] = self.data["COS_SIMILARITY"].round(self.round)      
         return self.data.sort_values("COS_SIMILARITY", ascending=False)
