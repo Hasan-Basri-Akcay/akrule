@@ -18,10 +18,12 @@ pip install akrule
 ```
 ## Dependencies
 akrule requires:
+
 time_series
   * Python (>= 3.9)
   * NumPy (>= 1.24.4)
   * Pandas (>= 2.1.2)
+    
 nlp
   * Python (>= 3.9)
   * NumPy (>= 1.24.4)
